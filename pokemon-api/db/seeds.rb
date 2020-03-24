@@ -1,3 +1,11 @@
+Team.destroy_all
+puts "Creating Team"
+Pokemon.destroy_all
+puts "Creating Pokemon"
+Move.destroy_all
+puts "Creating Moves"
+
+
 Team_1 = Team.create(name: "Team 1")
 Team_2 = Team.create(name: "Team 2")
 Team_3 = Team.create(name: "Team 3")

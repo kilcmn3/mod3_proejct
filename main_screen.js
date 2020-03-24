@@ -4,6 +4,13 @@ turnON();
 function turnON() {
   document.addEventListener('DOMContentLoaded', function () {
     displayTeams();
+    fetch('http://localhost:3000/pokemons')
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (pokemons) {
+        console.log(pokemons);
+      });
   });
 }
 
