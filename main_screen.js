@@ -1,33 +1,38 @@
-//Exectute function.
-turnON();
+const TeamsURL = "http://localhost:3000/teams"
+const PokemonsURL = "http://localhost:3000/pokemons"
+const MovesURL = "http://localhost:3000/moves"
 
-function turnON() {
+
+//Exectute function.
+const turnON = () => {
   document.addEventListener('DOMContentLoaded', function () {
     document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
-    battleRender();
 
-    fetch('http://localhost:3000/pokemons')
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (pokemons) {
-        console.log(pokemons);
-      });
+
+    // fetch(PokemonsURL)
+    //   .then(function (response) {
+    //     return response.json();
+    //   })
+    //   .then(function (pokemons) {
+    //     console.log(pokemons);
+    //   });
   });
 }
+
+turnON();
 
 //set background image when  render
 //create a new  div "team-container", and displays teams  with innerHTML.
 //display all the teams
 
-function fetchTeams() {
-  fetch('http://localhost:3000/teams')
+const fetchTeams =()=>{
+  fetch(TeamsURL)
     .then((response) => response.json())
     .then((json) => displayTeams(json));
 }
 
-function displayTeams(teams) {
+const displayTeams = (teams) => {
   const team1List = document.getElementById('team-1-list');
   const team2List = document.getElementById('team-2-list');
   const team3List = document.getElementById('team-3-list');
@@ -59,6 +64,7 @@ function displayTeams(teams) {
     team4List.appendChild(li);
   });
 
+
   teams[4].pokemons.forEach((pokemon) => {
     const li = document.createElement('li');
     li.innerText = pokemon.name;
@@ -69,14 +75,5 @@ function displayTeams(teams) {
     const li = document.createElement('li');
     li.innerText = pokemon.name;
     team6List.appendChild(li);
-  });
-}
-
-function battleRender() {
-  document.addEventListener('click', function (event) {
-    if (event.target.className === 'team-button') {
-      const teamsContainer = document.getElementById('teams-container');
-      teamsContainer.innerHTML = ``;
-    }
   });
 }
