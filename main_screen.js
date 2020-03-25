@@ -6,7 +6,7 @@ let ADAPTER;
 //Exectute function.
 const turnON = () => {
   document.addEventListener('DOMContentLoaded', function () {
-    document.body.style.backgroundImage = "url('main2.jpg')";
+    // document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
   });
 };

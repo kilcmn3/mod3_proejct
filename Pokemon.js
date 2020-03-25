@@ -5,7 +5,7 @@ class Pokemon {
     this.moves = moves;
   }
 
-  attack(num) {
+  minusHP(num) {
     if (!this.gameHP) {
       this.gameHP = this.hp;
     }
