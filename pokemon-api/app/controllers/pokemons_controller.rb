@@ -7,6 +7,6 @@ class PokemonsController < ApplicationController
 
     def show
         pokemon = Pokemon.find(params[:id])
-        render json:  pokemon, except: [:created_at, :updated_at], include: [:moves]
+        render json:  pokemon, except: [:created_at, :updated_at]
     end
 end
