@@ -147,7 +147,7 @@ function battleRender() {
               const userMovesList = document.getElementById('user-moves-list');
               json.moves.forEach((move) => {
                 if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
-                  const newLi = document.createElement('li');
+                  const newLi = document.createElement('button');
                   newLi.className = 'attack';
                   newLi.innerText = `${move.name} - Power: ${move.power}hp`;
                   userMovesList.appendChild(newLi);
