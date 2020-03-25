@@ -1,5 +1,5 @@
-let user; // undefined;
-let opponent;
+let userTeam; // undefined;
+let opponentTeam;
 
 //Call this function  when "click", event occurs. Please pass argumnet as "event.target". ex) choosePlayer(event.target)
 const choosePlayer = async (bttn) => {
@@ -13,7 +13,7 @@ const userChoose = (bttn) => {
   return fetch(`${TeamsURL}/${bttn.parentNode.dataset.id}`)
     .then((response) => response.json())
     .then((team) => {
-      user = new Player(team.name, team.pokemons); // check Player.js file. Now can use as user.hp => 100, user.pokemons => [poke1, poke2, poke3]
+      userTeam = new Player(team.name, team.pokemons); // check Player.js file. Now can use as user.hp => 100, user.pokemons => [poke1, poke2, poke3]
     });
 };
 
@@ -29,6 +29,7 @@ const opponentChoose = (bttn) => {
   return fetch(`${TeamsURL}/${result}`)
     .then((response) => response.json())
     .then((team) => {
-      opponent = new Player(team.name, team.pokemons); // check Player.js file.
+      opponentTeam = new Player(team.name, team.pokemons); // check Player.js file.
+      opponentTeam.id = team.id;
     });
 };
