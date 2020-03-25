@@ -1,24 +1,15 @@
-const TeamsURL = "http://localhost:3000/teams"
-const PokemonsURL = "http://localhost:3000/pokemons"
-const MovesURL = "http://localhost:3000/moves"
-
+const TeamsURL = 'http://localhost:3000/teams';
+const PokemonsURL = 'http://localhost:3000/pokemons';
+const MovesURL = 'http://localhost:3000/moves';
+let ADAPTER;
 
 //Exectute function.
 const turnON = () => {
   document.addEventListener('DOMContentLoaded', function () {
     document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
-
-
-    // fetch(PokemonsURL)
-    //   .then(function (response) {
-    //     return response.json();
-    //   })
-    //   .then(function (pokemons) {
-    //     console.log(pokemons);
-    //   });
   });
-}
+};
 
 turnON();
 
@@ -26,11 +17,11 @@ turnON();
 //create a new  div "team-container", and displays teams  with innerHTML.
 //display all the teams
 
-const fetchTeams =()=>{
+const fetchTeams = () => {
   fetch(TeamsURL)
     .then((response) => response.json())
     .then((json) => displayTeams(json));
-}
+};
 
 const displayTeams = (teams) => {
   const team1List = document.getElementById('team-1-list');
@@ -64,7 +55,6 @@ const displayTeams = (teams) => {
     team4List.appendChild(li);
   });
 
-
   teams[4].pokemons.forEach((pokemon) => {
     const li = document.createElement('li');
     li.innerText = pokemon.name;
@@ -76,4 +66,4 @@ const displayTeams = (teams) => {
     li.innerText = pokemon.name;
     team6List.appendChild(li);
   });
-}
+};
