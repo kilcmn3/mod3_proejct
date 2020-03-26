@@ -80,12 +80,12 @@ function battleRender() {
 
           selectedPokemonContainer.innerHTML = `
       <h1>CHOOSE A POKEMON</h1>
-      <div class="poke-card" data-id="1"><img src="${json.pokemons[0].image_url}" class="image"><h3>${json.pokemons[0].name}</h3>Moves:<ul id="poke-1-list"></ul></div>
-      <div class="poke-card" data-id="2"><img src="${json.pokemons[1].image_url}" class="image"><h3>${json.pokemons[1].name}</h3>Moves:<ul id="poke-2-list"></ul></div>
-      <div class="poke-card" data-id="3"><img src="${json.pokemons[2].image_url}" class="image"><h3>${json.pokemons[2].name}</h3>Moves:<ul id="poke-3-list"></ul></div>
-      <div class="poke-card" data-id="4"><img src="${json.pokemons[3].image_url}" class="image"><h3>${json.pokemons[3].name}</h3>Moves:<ul id="poke-4-list"></ul></div>
-      <div class="poke-card" data-id="5"><img src="${json.pokemons[4].image_url}" class="image"><h3>${json.pokemons[4].name}</h3>Moves:<ul id="poke-5-list"></ul></div>
-      <div class="poke-card" data-id="6"><img src="${json.pokemons[5].image_url}" class="image"><h3>${json.pokemons[5].name}</h3>Moves:<ul id="poke-6-list"></ul></div>
+      <div class="poke-card" data-id="0"><img src="${json.pokemons[0].image_url}" class="image" data-id="${json.pokemons[0].id}"><h3>${json.pokemons[0].name}</h3>Moves:<ul id="poke-1-list"></ul></div>
+      <div class="poke-card" data-id="1"><img src="${json.pokemons[1].image_url}" class="image" data-id="${json.pokemons[1].id}"><h3>${json.pokemons[1].name}</h3>Moves:<ul id="poke-2-list"></ul></div>
+      <div class="poke-card" data-id="2"><img src="${json.pokemons[2].image_url}" class="image" data-id="${json.pokemons[2].id}"><h3>${json.pokemons[2].name}</h3>Moves:<ul id="poke-3-list"></ul></div>
+      <div class="poke-card" data-id="3"><img src="${json.pokemons[3].image_url}" class="image" data-id="${json.pokemons[3].id}"><h3>${json.pokemons[3].name}</h3>Moves:<ul id="poke-4-list"></ul></div>
+      <div class="poke-card" data-id="4"><img src="${json.pokemons[4].image_url}" class="image" data-id="${json.pokemons[4].id}"><h3>${json.pokemons[4].name}</h3>Moves:<ul id="poke-5-list"></ul></div>
+      <div class="poke-card" data-id="5"><img src="${json.pokemons[5].image_url}" class="image" data-id="${json.pokemons[5].id}"><h3>${json.pokemons[5].name}</h3>Moves:<ul id="poke-6-list"></ul></div>
       `;
           document.body.appendChild(selectedPokemonContainer);
 
@@ -135,6 +135,7 @@ function battleRender() {
               userContainer.id = 'user-container';
               userContainer.dataset.id =
                 json.pokemons[event.target.parentNode.dataset.id].id;
+                console.log(userContainer.dataset.id)
               userContainer.innerHTML = `
           <img src="${
             json.pokemons[event.target.parentNode.dataset.id].image_url
@@ -154,7 +155,8 @@ function battleRender() {
               });
               selectedPokemonContainer.innerHTML = ``;
 
-              chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
+              chosenPokemon(event.target);
+              console.log(event.target.dataset.id) // user choose pokemon, and create Pokemon class instance.
             } else if (event.target.className === 'attack') {
               console.log(
                 `user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`,
