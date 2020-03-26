@@ -1,8 +1,9 @@
 class Pokemon {
-  constructor(hp, name, moves) {
+  constructor(hp, name, moves, team_id) {
     this.hp = hp;
     this.name = name;
     this.moves = moves;
+    this.team_id = team_id;
   }
 
   minusHP(num) {
