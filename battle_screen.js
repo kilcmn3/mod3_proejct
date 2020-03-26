@@ -1,15 +1,24 @@
 let userPokemon;
 let opponentPokemon;
-let divCont = document.createElement('div');
+let divUserCont;
 
 function chosenPokemon(element) {
+  divUserCont = document.querySelector('#user-container');
+  document.body.style.backgroundImage = '';
+
   fetch(`http://localhost:3000/pokemons/${element.parentElement.dataset.id}`)
     .then(function (response) {
       return response.json();
     })
     .then(function (pokemon) {
       userPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves);
-      // displayMoves(userPokemon);
+
+      divUserCont.innerHTML += `
+      <div class="user-progress">
+      User's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
+      <p><span>${pokemon.hp}/${pokemon.hp}</span></p>
+      </div>`;
+
       opponentPokemonChosen();
     });
 }
@@ -21,16 +30,34 @@ function opponentPokemonChosen() {
     })
     .then(function (pokemon) {
       opponentPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves);
+      createDivContainer(pokemon);
     });
 }
 
-function battleStart(list) {
-  divCont.innerHTML = '';
+function createDivContainer(pokemon) {
+  let divContLeft = document.createElement('div');
+  divContLeft.className = 'div-cont-right';
+  divContLeft.innerHTML = `
+  <div class="div1">
+  <h3 class="opp-poke-name">${pokemon.name}</h3>
+  <br>
+  <img src=${pokemon.image_url} class="opponent-image">
+  <div class="oppn-progress">
+  Enemy's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
+  <p><span>${pokemon.hp}/${pokemon.hp}</span></p>
+  </div>
+  </div>
+  `;
+  document.body.append(divContLeft);
+}
 
+function battleStart(list) {
   let num = splitSting(list.innerText);
   let opAttack = opponentAttack(); //Return opponent attack damage. ex) "power" => 30
   let usHP = userPokemon.minusHP(opAttack); // Minus user HP from opponent attack
   let opHP = opponentPokemon.minusHP(num); // Minus opponent HP from user attack.
+  let userProgress = document.querySelector('.user-progress');
+  let oppnProgress = document.querySelector('.oppn-progress');
 
   //prevent user or opponent HP to go below  0 HP.
   if (opHP < 1) {
@@ -42,15 +69,16 @@ function battleStart(list) {
     alert('You Lost!');
     return location.reload();
   }
-  divCont.innerHTML = `
+
+  userProgress.innerHTML = `
   User's HP: <progress value=${usHP} max=${userPokemon.hp}></progress>
-  <p>${usHP}/${userPokemon.hp}</p>
-  <br>
-  Opponent's HP: <progress value=${opHP} max=${opponentPokemon.hp}></progress>
-  <p>${opHP}/${opponentPokemon.hp}</p>
+  <p><span>${usHP}/${userPokemon.hp}</span></p>
   `;
 
-  document.body.append(divCont);
+  oppnProgress.innerHTML = `
+  Enemy's HP: <progress value=${opHP} max=${opponentPokemon.hp}></progress>
+  <p><span>${opHP}/${opponentPokemon.hp}</span></p>
+  `;
 }
 
 //Randomly choose moves from  opponent.

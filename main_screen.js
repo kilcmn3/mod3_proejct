@@ -67,7 +67,7 @@ function displayTeams(teams) {
 function battleRender() {
   document.addEventListener('click', function (event) {
     if (event.target.className === 'team-button') {
-      choosePlayer(event.target);
+      choosePlayer(event.target); // Creating userPoke, oppPoke
 
       fetch(`http://localhost:3000/teams/${event.target.dataset.id}`)
         .then((response) => response.json())
@@ -127,11 +127,9 @@ function battleRender() {
           opponentContainer.id = 'opponent-pokemon-container';
 
           document.body.appendChild(opponentContainer);
-
+          //after created userPok
           document.addEventListener('click', function (event) {
             if (event.target.className === 'image') {
-              chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
-
               const userContainer = document.createElement('div');
               userContainer.id = 'user-container';
               userContainer.dataset.id =
@@ -154,8 +152,9 @@ function battleRender() {
                 }
               });
               selectedPokemonContainer.innerHTML = ``;
+
+              chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
             } else if (event.target.className === 'attack') {
-              console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
               battleStart(event.target);
             }
           });
