@@ -16,9 +16,11 @@ ActiveRecord::Schema.define(version: 2020_03_23_194518) do
     t.string "name"
     t.integer "power"
     t.integer "pokemon_id", null: false
+    t.integer "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["pokemon_id"], name: "index_moves_on_pokemon_id"
+    t.index ["team_id"], name: "index_moves_on_team_id"
   end
 
   create_table "pokemons", force: :cascade do |t|
@@ -38,5 +40,6 @@ ActiveRecord::Schema.define(version: 2020_03_23_194518) do
   end
 
   add_foreign_key "moves", "pokemons"
+  add_foreign_key "moves", "teams"
   add_foreign_key "pokemons", "teams"
 end
