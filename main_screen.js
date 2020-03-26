@@ -6,6 +6,7 @@ function turnON() {
     document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
     battleRender();
+    addAvatarImage();
   });
 }
 
@@ -140,7 +141,7 @@ function battleRender() {
           }" class="user-image"><h3>${
                 json.pokemons[event.target.parentNode.dataset.id].name
               }</h3>Moves:<ul id="user-moves-list"></ul>
-          `
+          `;
               document.body.appendChild(userContainer);
               const userMovesList = document.getElementById('user-moves-list');
               json.moves.forEach((move) => {
@@ -155,14 +156,26 @@ function battleRender() {
 
               chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
             } else if (event.target.className === 'attack') {
-              console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
+              console.log(
+                `user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`,
+              );
 
               battleStart(event.target);
             }
-            
-
           });
         });
     }
   });
+}
+
+function addAvatarImage() {
+  for (let i = 1; i < 7; i++) {
+    let divTeam = document.getElementById(`team-${i}`);
+    let img = document.createElement('img');
+
+    img.src = `image/${i}.png`;
+    img.alt = 'Avatar';
+    img.className = 'avatar';
+    divTeam.prepend(img);
+  }
 }
