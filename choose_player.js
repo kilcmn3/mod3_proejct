@@ -16,7 +16,7 @@ function userChoose(bttn) {
       return response.json();
     })
     .then(function (team) {
-      userTeam = new Player(team.name, team.pokemons); // check Player.js file. Now can use as user.hp => 100, user.pokemons => [poke1, poke2, poke3]
+      userTeam = new Player(team.name, team.pokemons, team.wins, team.losses); // check Player.js file. Now can use as user.hp => 100, user.pokemons => [poke1, poke2, poke3]
     });
 }
 
@@ -34,7 +34,7 @@ function opponentChoose(bttn) {
       return response.json();
     })
     .then(function (team) {
-      opponentTeam = new Player(team.name, team.pokemons); // check Player.js file.
+      opponentTeam = new Player(team.name, team.pokemons, team.wins, team.losses); // check Player.js file.
       opponentTeam.id = team.id;
     });
 }
