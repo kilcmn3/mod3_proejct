@@ -9,3 +9,27 @@
   height: auto;
   border-radius: 10%;
 }
+
+.opponent-image {
+  width: 300px;
+  height: auto;
+  border-radius: 10%;
+  float: right;
+}
+
+.opp-poke-name {
+  float: center;
+  text-align: center;
+}
+
+.div-cont-right {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.div1 {
+  grid-area: 1 / 2 / 2 / 3;
+}
