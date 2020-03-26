@@ -1,29 +1,33 @@
 let userPokemon;
 let opponentPokemon;
-let divCont = document.createElement("div")
+let divCont = document.createElement('div');
 
-const chosenPokemon = (element) => {
+function chosenPokemon(element) {
   fetch(`http://localhost:3000/pokemons/${element.parentElement.dataset.id}`)
-    .then((response) => response.json())
-    .then((pokemon) => {
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (pokemon) {
       userPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves);
       // displayMoves(userPokemon);
       opponentPokemonChosen();
     });
-};
+}
 
-const opponentPokemonChosen = () => {
+function opponentPokemonChosen() {
   fetch(`http://localhost:3000/pokemons/${opponentTeam.id}`)
-    .then((response) => response.json())
-    .then((pokemon) => {
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (pokemon) {
       opponentPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves);
     });
-};
+}
 
-const battleStart =   (list) => {
-  divCont.innerHTML = ''
-  
-  let num = splitSting(list.innerText)
+function battleStart(list) {
+  divCont.innerHTML = '';
+
+  let num = splitSting(list.innerText);
   let opAttack = opponentAttack(); //Return opponent attack damage. ex) "power" => 30
   let usHP = userPokemon.minusHP(opAttack); // Minus user HP from opponent attack
   let opHP = opponentPokemon.minusHP(num); // Minus opponent HP from user attack.
@@ -44,24 +48,23 @@ const battleStart =   (list) => {
   <br>
   Opponent's HP: <progress value=${opHP} max=${opponentPokemon.hp}></progress>
   <p>${opHP}/${opponentPokemon.hp}</p>
-  ` ;
+  `;
 
-  
-  document.body.append(divCont)
-};
+  document.body.append(divCont);
+}
 
 //Randomly choose moves from  opponent.
-const opponentAttack = () => {
+function opponentAttack() {
   let attackMove =
     opponentPokemon.moves[
       Math.floor(Math.random() * opponentPokemon.moves.length)
     ];
   return attackMove.power;
-};
+}
 
-function splitSting (str){
-  let splitWord = str.split(" ")
-  let lastElement = splitWord[splitWord.length-1]
-  let result = lastElement.split("hp")
-  return parseInt(result[0])
+function splitSting(str) {
+  let splitWord = str.split(' ');
+  let lastElement = splitWord[splitWord.length - 1];
+  let result = lastElement.split('hp');
+  return parseInt(result[0]);
 }
