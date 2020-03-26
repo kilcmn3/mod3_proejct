@@ -6,12 +6,12 @@ Move.destroy_all
 puts "Creating Moves"
 
 
-Team_1 = Team.create(name: "Team 1")
-Team_2 = Team.create(name: "Team 2")
-Team_3 = Team.create(name: "Team 3")
-Team_4 = Team.create(name: "Team 4")
-Team_5 = Team.create(name: "Team 5")
-Team_6 = Team.create(name: "Team 6")
+Team_1 = Team.create(name: "Team 1", wins: 0, losses: 0)
+Team_2 = Team.create(name: "Team 2", wins: 0, losses: 0)
+Team_3 = Team.create(name: "Team 3", wins: 0, losses: 0)
+Team_4 = Team.create(name: "Team 4", wins: 0, losses: 0)
+Team_5 = Team.create(name: "Team 5", wins: 0, losses: 0)
+Team_6 = Team.create(name: "Team 6", wins: 0, losses: 0)
 
 Pokemon_1 = Pokemon.create(name: "Venusaur", hp: 150, image_url: "https://img.pokemondb.net/artwork/large/venusaur.jpg", team_id: 1)
 Pokemon_2 = Pokemon.create(name: "Charizard", hp: 150, image_url: "https://img.pokemondb.net/artwork/large/charizard.jpg", team_id: 2)
