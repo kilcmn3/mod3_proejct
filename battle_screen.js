@@ -1,6 +1,7 @@
 let userPokemon;
 let opponentPokemon;
 let divUserCont;
+let opponentMove;
 
 function chosenPokemon(element) {
   divUserCont = document.querySelector('#user-container');
@@ -39,7 +40,7 @@ function createDivContainer(pokemon) {
   divContLeft.className = 'div-cont-right';
   divContLeft.innerHTML = `
   <div class="div1">
-  <h3 class="opp-poke-name">${pokemon.name}</h3>
+  <h1 class="opp-poke-name">${pokemon.name}</h1>
   <br>
   <img src=${pokemon.image_url} class="opponent-image">
   <div class="oppn-progress">
@@ -107,6 +108,7 @@ function opponentAttack() {
     opponentPokemon.moves[
       Math.floor(Math.random() * opponentPokemon.moves.length)
     ];
+  opponentMove = attackMove.name
   return attackMove.power;
 }
 
