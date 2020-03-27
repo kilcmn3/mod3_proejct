@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('click', function (event) {
-  if (event.target.className === 'team-button') {
+  if (event.target.id === 'team-button') {
     document.getElementById('h1').innerText = 'CHOOSE A POKEMON';
 
     choosePlayer(event.target)
@@ -19,12 +19,12 @@ document.addEventListener('click', function (event) {
         document.body.appendChild(opponentContainer);
         // user choose pokemon, and create Pokemon class instance.
       });
-  } else if (event.target.id === 'attack') {
+  } else if (event.target.id === 'image') {
     chosenPokemon(event.target).then(function () {
       console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
-
-      return battleStart(event.target);
     });
+  } else if (event.target.className === 'attack') {
+    battleStart(event.target);
   }
 });
 
@@ -46,17 +46,21 @@ function displayTeams(teams) {
   let ulReturn;
 
   teams.forEach(function (team) {
-    ulReturn = displayPokemons(team);
+    pReturn = displayPokemons(team);
 
     const divCol = document.createElement('div');
     divCol.className = 'col-lg-4 col-md-6 p-4';
     divCol.innerHTML =
       `
     <div id="team-${team.id}" data-id="${team.id}">
-    <button class="team-button" data-id="${team.id}">Team ${team.id}</button>
+    <a href="#" class="btn btn-primary" id="team-button" data-id=${team.id}><span class="glyphicon glyphicon-user"></span> Team ${team.id}</a>
+    <div class="w-50 p-3">
+    <ul class="list-group">
     ` +
-      ulReturn.innerHTML +
-      `</div>`;
+      pReturn.innerHTML +
+      `</ul>
+      </div>
+      </div>`;
     divRow.append(divCol);
   });
 
@@ -64,14 +68,14 @@ function displayTeams(teams) {
 }
 
 function displayPokemons(team) {
-  let ul = document.createElement('ul');
+  let p = document.createElement('p');
 
   team.pokemons.forEach(function (pokemon) {
-    ul.innerHTML += `
-    <li>${pokemon.name}</li>
+    p.innerHTML += `
+    <li class="list-group-item">${pokemon.name}</li>
     `;
   });
-  return ul;
+  return p;
 }
 
 function addAvatarImage() {
@@ -102,14 +106,19 @@ async function fetchingPokemons() {
         divCol.className = 'col-lg-4 col-md-6 p-4';
 
         divCol.innerHTML += `
-      <div id='selected-pokemon-container'>
-      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="img-thumbnail" id="attack" data-id="${pokemon.id}" width="300px" height="auto" border-radius="10%">
-      <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
-          <li>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
-          <li>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>
-          <li>${pokemon.moves[2].name} - Power: ${pokemon.moves[2].power}hp</li>
-      </ul>
+      <div class="poke-card" data-id="${num}">
+      <div class="col-md-5">
+      <img src="${pokemon.image_url}" class="img-thumbnail" id="image" data-id="${pokemon.id}">
+      <h3 class="text-left">${pokemon.name}</h3>
+      <ul class="list-group" id="poke-${pokeNum}-list">
       </div>
+      <div class="w-75 p-3">
+      <p class="text-left">Moves:</p>
+          <li class="list-group-item">${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
+          <li class="list-group-item">${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>
+          <li class="list-group-item">${pokemon.moves[2].name} - Power: ${pokemon.moves[2].power}hp</li>
+          </div>
+      </ul>
       </div>
     `;
         // document.body.append(selectedPokemonContainer)
