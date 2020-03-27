@@ -1,14 +1,32 @@
 const divRow = document.querySelector('.row.justify-content-center');
 
-//Exectute function.
-turnON();
+document.addEventListener('DOMContentLoaded', function () {
+  fetchTeams();
+});
 
-function turnON() {
-  document.addEventListener('DOMContentLoaded', function () {
-    fetchTeams();
-    battleRender();
-  });
-}
+document.addEventListener('click', function (event) {
+  if (event.target.className === 'team-button') {
+    document.getElementById('h1').innerText = 'CHOOSE A POKEMON';
+
+    choosePlayer(event.target)
+      .then(function () {
+        fetchingPokemons();
+      }) // Creating userPoke, oppPoke
+      .then(function () {
+        const opponentContainer = document.createElement('div');
+        opponentContainer.id = 'opponent-pokemon-container';
+
+        document.body.appendChild(opponentContainer);
+        // user choose pokemon, and create Pokemon class instance.
+      });
+  } else if (event.target.id === 'attack') {
+    chosenPokemon(event.target).then(function () {
+      console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
+
+      return battleStart(event.target);
+    });
+  }
+});
 
 //set background image when  render
 //create a new  div "team-container", and displays teams  with innerHTML.
@@ -67,37 +85,12 @@ function addAvatarImage() {
   }
 }
 
-function battleRender() {
-  document.addEventListener('click', function (event) {
-    if (event.target.className === 'team-button') {
-      document.getElementById('h1').innerText = 'CHOOSE A POKEMON';
-
-      choosePlayer(event.target)
-        .then(function () {
-          fetchingPokemons();
-        }) // Creating userPoke, oppPoke
-        .then(function () {
-          const opponentContainer = document.createElement('div');
-          opponentContainer.id = 'opponent-pokemon-container';
-
-          document.body.appendChild(opponentContainer);
-          // user choose pokemon, and create Pokemon class instance.
-        });
-    } else if (event.target.className === 'attack') {
-      console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
-      chosenPokemon(event.target);
-      battleStart(event.target);
-    }
-  });
-}
-
 async function fetchingPokemons() {
   let num = 0;
   let pokeNum = 1;
 
   divRow.innerHTML = '';
   userTeam.pokemons.forEach(function (pokemon) {
-    console.log(pokemon);
     fetch(`http://localhost:3000/pokemons/${pokemon.id}`)
       .then(function (response) {
         return response.json();
@@ -105,7 +98,7 @@ async function fetchingPokemons() {
       .then(function (pokemon) {
         divRow.innerHTML += `
       <div id='selected-pokemon-container'>
-      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" data-id="${pokemon.id}">
+      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" id="attack" data-id="${pokemon.id}">
       <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
           <li>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
           <li>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>

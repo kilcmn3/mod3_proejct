@@ -2,10 +2,12 @@ let userPokemon;
 let opponentPokemon;
 let divUserCont;
 
-function chosenPokemon(element) {
+async function chosenPokemon(element) {
   document.body.style.backgroundImage = '';
+  divRow.innerHTML = '';
+  await opponentPokemonChosen();
 
-  fetch(`http://localhost:3000/pokemons/${element.dataset.id}`)
+  return fetch(`http://localhost:3000/pokemons/${element.dataset.id}`)
     .then(function (response) {
       return response.json();
     })
@@ -18,16 +20,19 @@ function chosenPokemon(element) {
       );
 
       divRow.innerHTML += `
+      <div class="div1">
+      <h3 class="user-poke-name">${pokemon.name}</h3>
+      <br>
+      <img src=${pokemon.image_url} class="user-image">
       <div class="user-progress">
       User's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
       <p><span>${pokemon.hp}/${pokemon.hp}</span></p>
+      </div>
       </div>`;
-
-      opponentPokemonChosen();
     });
 }
 
-function opponentPokemonChosen() {
+async function opponentPokemonChosen() {
   fetch(`http://localhost:3000/pokemons/${opponentTeam.id}`)
     .then(function (response) {
       return response.json();
@@ -61,7 +66,6 @@ function createDivContainer(pokemon) {
 }
 
 function battleStart(list) {
-  console.log('Why this is happening?');
   let num = splitSting(list.innerText);
   let opAttack = opponentAttack(); //Return opponent attack damage. ex) "power" => 30
   let usHP = userPokemon.minusHP(opAttack); // Minus user HP from opponent attack
