@@ -3,7 +3,6 @@ turnON();
 
 function turnON() {
   document.addEventListener('DOMContentLoaded', function () {
-    document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
     battleRender();
     addAvatarImage();
@@ -21,12 +20,27 @@ function fetchTeams() {
 }
 
 function displayTeams(teams) {
+
   const team1List = document.getElementById('team-1-list');
   const team2List = document.getElementById('team-2-list');
   const team3List = document.getElementById('team-3-list');
   const team4List = document.getElementById('team-4-list');
   const team5List = document.getElementById('team-5-list');
   const team6List = document.getElementById('team-6-list');
+
+  const team1Record = document.getElementById('team-1-record');
+  team1Record.innerText = `Wins: ${teams[0].wins} | Losses: ${teams[0].losses}`
+  const team2Record = document.getElementById('team-2-record');
+  team2Record.innerText = `Wins: ${teams[1].wins} | Losses: ${teams[1].losses}`
+  const team3Record = document.getElementById('team-3-record');
+  team3Record.innerText = `Wins: ${teams[2].wins} | Losses: ${teams[2].losses}`
+  const team4Record = document.getElementById('team-4-record');
+  team4Record.innerText = `Wins: ${teams[3].wins} | Losses: ${teams[3].losses}`
+  const team5Record = document.getElementById('team-5-record');
+  team5Record.innerText = `Wins: ${teams[4].wins} | Losses: ${teams[4].losses}`
+  const team6Record = document.getElementById('team-6-record');
+  team6Record.innerText = `Wins: ${teams[5].wins} | Losses: ${teams[5].losses}`
+  
 
   teams[0].pokemons.forEach((pokemon) => {
     const li = document.createElement('li');
@@ -80,12 +94,12 @@ function battleRender() {
 
           selectedPokemonContainer.innerHTML = `
       <h1>CHOOSE A POKEMON</h1>
-      <div class="poke-card" data-id="0"><img src="${json.pokemons[0].image_url}" class="image" data-id="${json.pokemons[0].id}"><h3>${json.pokemons[0].name}</h3>Moves:<ul id="poke-1-list"></ul></div>
-      <div class="poke-card" data-id="1"><img src="${json.pokemons[1].image_url}" class="image" data-id="${json.pokemons[1].id}"><h3>${json.pokemons[1].name}</h3>Moves:<ul id="poke-2-list"></ul></div>
-      <div class="poke-card" data-id="2"><img src="${json.pokemons[2].image_url}" class="image" data-id="${json.pokemons[2].id}"><h3>${json.pokemons[2].name}</h3>Moves:<ul id="poke-3-list"></ul></div>
-      <div class="poke-card" data-id="3"><img src="${json.pokemons[3].image_url}" class="image" data-id="${json.pokemons[3].id}"><h3>${json.pokemons[3].name}</h3>Moves:<ul id="poke-4-list"></ul></div>
-      <div class="poke-card" data-id="4"><img src="${json.pokemons[4].image_url}" class="image" data-id="${json.pokemons[4].id}"><h3>${json.pokemons[4].name}</h3>Moves:<ul id="poke-5-list"></ul></div>
-      <div class="poke-card" data-id="5"><img src="${json.pokemons[5].image_url}" class="image" data-id="${json.pokemons[5].id}"><h3>${json.pokemons[5].name}</h3>Moves:<ul id="poke-6-list"></ul></div>
+      <div class="poke-card" data-id="0"><img src="${json.pokemons[0].image_url}" class="image" data-id="${json.pokemons[0].id}"><h1>${json.pokemons[0].name}</h1>Moves:<ul id="poke-1-list"></ul></div>
+      <div class="poke-card" data-id="1"><img src="${json.pokemons[1].image_url}" class="image" data-id="${json.pokemons[1].id}"><h1>${json.pokemons[1].name}</h1>Moves:<ul id="poke-2-list"></ul></div>
+      <div class="poke-card" data-id="2"><img src="${json.pokemons[2].image_url}" class="image" data-id="${json.pokemons[2].id}"><h1>${json.pokemons[2].name}</h1>Moves:<ul id="poke-3-list"></ul></div>
+      <div class="poke-card" data-id="3"><img src="${json.pokemons[3].image_url}" class="image" data-id="${json.pokemons[3].id}"><h1>${json.pokemons[3].name}</h1>Moves:<ul id="poke-4-list"></ul></div>
+      <div class="poke-card" data-id="4"><img src="${json.pokemons[4].image_url}" class="image" data-id="${json.pokemons[4].id}"><h1>${json.pokemons[4].name}</h1>Moves:<ul id="poke-5-list"></ul></div>
+      <div class="poke-card" data-id="5"><img src="${json.pokemons[5].image_url}" class="image" data-id="${json.pokemons[5].id}"><h1>${json.pokemons[5].name}</h1>Moves:<ul id="poke-6-list"></ul></div>
       `;
           document.body.appendChild(selectedPokemonContainer);
 
@@ -135,15 +149,20 @@ function battleRender() {
               userContainer.id = 'user-container';
               userContainer.dataset.id =
                 json.pokemons[event.target.parentNode.dataset.id].id;
-                console.log(userContainer.dataset.id)
               userContainer.innerHTML = `
           <img src="${
             json.pokemons[event.target.parentNode.dataset.id].image_url
-          }" class="user-image"><h3>${
+          }" class="user-image"><h1>${
                 json.pokemons[event.target.parentNode.dataset.id].name
-              }</h3>Moves:<ul id="user-moves-list"></ul>
+              }</h1>Moves:<ul id="user-moves-list"></ul>
           `;
               document.body.appendChild(userContainer);
+
+              const vs = document.createElement("div")
+              vs.id = "vs"
+              vs.innerText = "vs."
+              document.body.appendChild(vs)
+
               const userMovesList = document.getElementById('user-moves-list');
               json.moves.forEach((move) => {
                 if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
@@ -155,14 +174,19 @@ function battleRender() {
               });
               selectedPokemonContainer.innerHTML = ``;
 
-              chosenPokemon(event.target);
-              console.log(event.target.dataset.id) // user choose pokemon, and create Pokemon class instance.
+              chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
             } else if (event.target.className === 'attack') {
-              console.log(
-                `user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`,
-              );
-
               battleStart(event.target);
+              let move = event.target.innerText.split(" - ")[0]
+              const feedList = document.getElementById("feed-list")
+              const feedHeader = document.getElementById("battle-feed-header")
+              feedHeader.innerText = "Battle Feed"
+              const userLi = document.createElement("li")
+              const opponentLi = document.createElement("li")
+              userLi.innerText = `${userPokemon.name} used ${move}!`
+              opponentLi.innerText = `${opponentPokemon.name} used ${opponentMove}!`
+              feedList.appendChild(userLi)
+              feedList.appendChild(opponentLi)
             }
           });
         });
