@@ -72,54 +72,26 @@ function battleRender() {
     if (event.target.className === 'team-button') {
       document.getElementById('h1').innerText = 'CHOOSE A POKEMON';
 
-      choosePlayer(event.target).then(function () {
-        fetchingPokemons();
-      }); // Creating userPoke, oppPoke
+      choosePlayer(event.target)
+        .then(function () {
+          fetchingPokemons();
+        }) // Creating userPoke, oppPoke
+        .then(function () {
+          const opponentContainer = document.createElement('div');
+          opponentContainer.id = 'opponent-pokemon-container';
 
-      const opponentContainer = document.createElement('div');
-      opponentContainer.id = 'opponent-pokemon-container';
-
-      document.body.appendChild(opponentContainer);
-
-      //after created userPok
-      // document.addEventListener('click', function (event) {
-      //   if (event.target.className === 'image') {
-      //     const userContainer = document.createElement('div');
-      //     userContainer.id = 'user-container';
-      //     userContainer.dataset.id =
-      //       json.pokemons[event.target.parentNode.dataset.id].id;
-      //     console.log(userContainer.dataset.id);
-      //     userContainer.innerHTML = `
-      //     <img src="${
-      //       json.pokemons[event.target.parentNode.dataset.id].image_url
-      //     }" class="user-image"><h3>${
-      //       json.pokemons[event.target.parentNode.dataset.id].name
-      //     }</h3>Moves:<ul id="user-moves-list"></ul>
-      //     `;
-      //     document.body.appendChild(userContainer);
-      //     const userMovesList = document.getElementById('user-moves-list');
-      //     json.moves.forEach((move) => {
-      //       if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
-      //         const newLi = document.createElement('button');
-      //         newLi.className = 'attack';
-      //         newLi.innerText = `${move.name} - Power: ${move.power}hp`;
-      //         userMovesList.appendChild(newLi);
-      //       }
-      //     });
-      //     selectedPokemonContainer.innerHTML = ``;
-
-      chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
+          document.body.appendChild(opponentContainer);
+          // user choose pokemon, and create Pokemon class instance.
+        });
     } else if (event.target.className === 'attack') {
       console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
-
+      chosenPokemon(event.target);
       battleStart(event.target);
     }
-
-    // }
   });
 }
 
-function fetchingPokemons() {
+async function fetchingPokemons() {
   let num = 0;
   let pokeNum = 1;
 

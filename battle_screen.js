@@ -61,6 +61,7 @@ function createDivContainer(pokemon) {
 }
 
 function battleStart(list) {
+  console.log('Why this is happening?');
   let num = splitSting(list.innerText);
   let opAttack = opponentAttack(); //Return opponent attack damage. ex) "power" => 30
   let usHP = userPokemon.minusHP(opAttack); // Minus user HP from opponent attack
