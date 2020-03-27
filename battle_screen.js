@@ -20,10 +20,13 @@ async function chosenPokemon(element) {
       );
 
       divRow.innerHTML += `
-      <div class="div1">
+      <div id="user-moves-list">
       <h3 class="user-poke-name">${pokemon.name}</h3>
       <br>
       <img src=${pokemon.image_url} class="user-image">
+      <li>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
+      <li>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>
+      <li>${pokemon.moves[2].name} - Power: ${pokemon.moves[2].power}hp</li>
       <div class="user-progress">
       User's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
       <p><span>${pokemon.hp}/${pokemon.hp}</span></p>
@@ -31,6 +34,17 @@ async function chosenPokemon(element) {
       </div>`;
     });
 }
+// function () {
+//   const userMovesList = document.getElementById('user-moves-list');
+//   json.moves.forEach((move) => {
+//     if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
+//       const newLi = document.createElement('button');
+//       newLi.className = 'attack';
+//       newLi.innerText = `${move.name} - Power: ${move.power}hp`;
+//       userMovesList.appendChild(newLi);
+//     }
+//   });
+// }
 
 async function opponentPokemonChosen() {
   fetch(`http://localhost:3000/pokemons/${opponentTeam.id}`)

@@ -59,6 +59,7 @@ function displayTeams(teams) {
       `</div>`;
     divRow.append(divCol);
   });
+
   addAvatarImage();
 }
 
@@ -79,7 +80,8 @@ function addAvatarImage() {
     let img = document.createElement('img');
 
     img.src = `image/${i}.png`;
-    img.alt = 'Avatar';
+    img.alt = 'Responsive image';
+
     img.className = 'avatar avatar-32 img-circle';
     divTeam.prepend(img);
   }
@@ -96,9 +98,12 @@ async function fetchingPokemons() {
         return response.json();
       })
       .then(function (pokemon) {
-        divRow.innerHTML += `
+        const divCol = document.createElement('div');
+        divCol.className = 'col-lg-4 col-md-6 p-4';
+
+        divCol.innerHTML += `
       <div id='selected-pokemon-container'>
-      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" id="attack" data-id="${pokemon.id}">
+      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="img-thumbnail" id="attack" data-id="${pokemon.id}" width="300px" height="auto" border-radius="10%">
       <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
           <li>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
           <li>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>
@@ -110,6 +115,7 @@ async function fetchingPokemons() {
         // document.body.append(selectedPokemonContainer)
         num++;
         pokeNum++;
+        divRow.append(divCol);
       });
   });
 }
