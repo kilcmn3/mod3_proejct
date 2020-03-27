@@ -3,7 +3,6 @@ let opponentPokemon;
 let divUserCont;
 
 function chosenPokemon(element) {
-  divUserCont = document.querySelector('#user-container');
   document.body.style.backgroundImage = '';
 
   fetch(`http://localhost:3000/pokemons/${element.dataset.id}`)
@@ -18,7 +17,7 @@ function chosenPokemon(element) {
         pokemon.team_id,
       );
 
-      divUserCont.innerHTML += `
+      divRow.innerHTML += `
       <div class="user-progress">
       User's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
       <p><span>${pokemon.hp}/${pokemon.hp}</span></p>

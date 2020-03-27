@@ -1,3 +1,5 @@
+const divRow = document.querySelector('.row.justify-content-center');
+
 //Exectute function.
 turnON();
 
@@ -23,7 +25,6 @@ function fetchTeams() {
 }
 
 function displayTeams(teams) {
-  const divRow = document.querySelector('.row.justify-content-center');
   let ulReturn;
 
   teams.forEach(function (team) {
@@ -69,80 +70,81 @@ function addAvatarImage() {
 function battleRender() {
   document.addEventListener('click', function (event) {
     if (event.target.className === 'team-button') {
-      choosePlayer(event.target); // Creating userPoke, oppPoke
+      document.getElementById('h1').innerText = 'CHOOSE A POKEMON';
 
-      fetch(`http://localhost:3000/teams/${event.target.dataset.id}`)
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (json) {
-          const teamsContainer = document.getElementById('teams-container');
-          teamsContainer.innerHTML = ``;
-          // const selectedPokemonContainer = document.createElement('div');
-          // selectedPokemonContainer.id = 'selected-pokemon-container';
+      choosePlayer(event.target).then(function () {
+        fetchingPokemons();
+      }); // Creating userPoke, oppPoke
 
-          document.body.innerHTML = `<h1>CHOOSE A POKEMON</h1>`;
-          debugger;
-          let num = 0;
-          let pokeNum = 1;
-          json.pokemons.forEach(function (pokemon) {
-            document.body.innerHTML += `
-              <div id='selected-pokemon-container'>
-             
-              <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" data-id="${pokemon.id}">
-              <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
-              <li>${pokemon.moves[0]}</li><li>${pokemon.moves[1]}</li><li>${pokemon.moves[2]}</li>
-              </ul>
-              </div>
-              </div>
-            `;
-            // document.body.append(selectedPokemonContainer)
-            num++;
-            pokeNum++;
-          });
+      const opponentContainer = document.createElement('div');
+      opponentContainer.id = 'opponent-pokemon-container';
 
-          const opponentContainer = document.createElement('div');
-          opponentContainer.id = 'opponent-pokemon-container';
+      document.body.appendChild(opponentContainer);
 
-          document.body.appendChild(opponentContainer);
-          //after created userPok
-          document.addEventListener('click', function (event) {
-            if (event.target.className === 'image') {
-              const userContainer = document.createElement('div');
-              userContainer.id = 'user-container';
-              userContainer.dataset.id =
-                json.pokemons[event.target.parentNode.dataset.id].id;
-              console.log(userContainer.dataset.id);
-              userContainer.innerHTML = `
-          <img src="${
-            json.pokemons[event.target.parentNode.dataset.id].image_url
-          }" class="user-image"><h3>${
-                json.pokemons[event.target.parentNode.dataset.id].name
-              }</h3>Moves:<ul id="user-moves-list"></ul>
-          `;
-              document.body.appendChild(userContainer);
-              const userMovesList = document.getElementById('user-moves-list');
-              json.moves.forEach((move) => {
-                if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
-                  const newLi = document.createElement('button');
-                  newLi.className = 'attack';
-                  newLi.innerText = `${move.name} - Power: ${move.power}hp`;
-                  userMovesList.appendChild(newLi);
-                }
-              });
-              selectedPokemonContainer.innerHTML = ``;
+      //after created userPok
+      // document.addEventListener('click', function (event) {
+      //   if (event.target.className === 'image') {
+      //     const userContainer = document.createElement('div');
+      //     userContainer.id = 'user-container';
+      //     userContainer.dataset.id =
+      //       json.pokemons[event.target.parentNode.dataset.id].id;
+      //     console.log(userContainer.dataset.id);
+      //     userContainer.innerHTML = `
+      //     <img src="${
+      //       json.pokemons[event.target.parentNode.dataset.id].image_url
+      //     }" class="user-image"><h3>${
+      //       json.pokemons[event.target.parentNode.dataset.id].name
+      //     }</h3>Moves:<ul id="user-moves-list"></ul>
+      //     `;
+      //     document.body.appendChild(userContainer);
+      //     const userMovesList = document.getElementById('user-moves-list');
+      //     json.moves.forEach((move) => {
+      //       if (move.pokemon_id === parseInt(userContainer.dataset.id)) {
+      //         const newLi = document.createElement('button');
+      //         newLi.className = 'attack';
+      //         newLi.innerText = `${move.name} - Power: ${move.power}hp`;
+      //         userMovesList.appendChild(newLi);
+      //       }
+      //     });
+      //     selectedPokemonContainer.innerHTML = ``;
 
-              chosenPokemon(event.target);
-              console.log(event.target.dataset.id); // user choose pokemon, and create Pokemon class instance.
-            } else if (event.target.className === 'attack') {
-              console.log(
-                `user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`,
-              );
+      chosenPokemon(event.target); // user choose pokemon, and create Pokemon class instance.
+    } else if (event.target.className === 'attack') {
+      console.log(`user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`);
 
-              battleStart(event.target);
-            }
-          });
-        });
+      battleStart(event.target);
     }
+
+    // }
+  });
+}
+
+function fetchingPokemons() {
+  let num = 0;
+  let pokeNum = 1;
+
+  divRow.innerHTML = '';
+  userTeam.pokemons.forEach(function (pokemon) {
+    console.log(pokemon);
+    fetch(`http://localhost:3000/pokemons/${pokemon.id}`)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (pokemon) {
+        divRow.innerHTML += `
+      <div id='selected-pokemon-container'>
+      <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" data-id="${pokemon.id}">
+      <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
+          <li>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</li>
+          <li>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</li>
+          <li>${pokemon.moves[2].name} - Power: ${pokemon.moves[2].power}hp</li>
+      </ul>
+      </div>
+      </div>
+    `;
+        // document.body.append(selectedPokemonContainer)
+        num++;
+        pokeNum++;
+      });
   });
 }
