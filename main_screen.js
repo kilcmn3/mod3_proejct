@@ -3,10 +3,8 @@ turnON();
 
 function turnON() {
   document.addEventListener('DOMContentLoaded', function () {
-    document.body.style.backgroundImage = "url('main2.jpg')";
     fetchTeams();
     battleRender();
-    addAvatarImage();
   });
 }
 
@@ -16,53 +14,56 @@ function turnON() {
 
 function fetchTeams() {
   fetch('http://localhost:3000/teams')
-    .then((response) => response.json())
-    .then((json) => displayTeams(json));
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (teams) {
+      displayTeams(teams);
+    });
 }
 
 function displayTeams(teams) {
-  const team1List = document.getElementById('team-1-list');
-  const team2List = document.getElementById('team-2-list');
-  const team3List = document.getElementById('team-3-list');
-  const team4List = document.getElementById('team-4-list');
-  const team5List = document.getElementById('team-5-list');
-  const team6List = document.getElementById('team-6-list');
+  const divRow = document.querySelector('.row.justify-content-center');
+  let ulReturn;
 
-  teams[0].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team1List.appendChild(li);
-  });
+  teams.forEach(function (team) {
+    ulReturn = displayPokemons(team);
 
-  teams[1].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team2List.appendChild(li);
+    const divCol = document.createElement('div');
+    divCol.className = 'col-lg-4 col-md-6 p-4';
+    divCol.innerHTML =
+      `
+    <div id="team-${team.id}" data-id="${team.id}">
+    <button class="team-button" data-id="${team.id}">Team ${team.id}</button>
+    ` +
+      ulReturn.innerHTML +
+      `</div>`;
+    divRow.append(divCol);
   });
+  addAvatarImage();
+}
 
-  teams[2].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team3List.appendChild(li);
-  });
+function displayPokemons(team) {
+  let ul = document.createElement('ul');
 
-  teams[3].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team4List.appendChild(li);
+  team.pokemons.forEach(function (pokemon) {
+    ul.innerHTML += `
+    <li>${pokemon.name}</li>
+    `;
   });
+  return ul;
+}
 
-  teams[4].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team5List.appendChild(li);
-  });
+function addAvatarImage() {
+  for (let i = 1; i < 7; i++) {
+    let divTeam = document.getElementById(`team-${i}`);
+    let img = document.createElement('img');
 
-  teams[5].pokemons.forEach((pokemon) => {
-    const li = document.createElement('li');
-    li.innerText = pokemon.name;
-    team6List.appendChild(li);
-  });
+    img.src = `image/${i}.png`;
+    img.alt = 'Avatar';
+    img.className = 'avatar avatar-32 img-circle';
+    divTeam.prepend(img);
+  }
 }
 
 function battleRender() {
@@ -71,57 +72,33 @@ function battleRender() {
       choosePlayer(event.target); // Creating userPoke, oppPoke
 
       fetch(`http://localhost:3000/teams/${event.target.dataset.id}`)
-        .then((response) => response.json())
+        .then(function (response) {
+          return response.json();
+        })
         .then(function (json) {
           const teamsContainer = document.getElementById('teams-container');
           teamsContainer.innerHTML = ``;
-          const selectedPokemonContainer = document.createElement('div');
-          selectedPokemonContainer.id = 'selected-pokemon-container';
+          // const selectedPokemonContainer = document.createElement('div');
+          // selectedPokemonContainer.id = 'selected-pokemon-container';
 
-          selectedPokemonContainer.innerHTML = `
-      <h1>CHOOSE A POKEMON</h1>
-      <div class="poke-card" data-id="0"><img src="${json.pokemons[0].image_url}" class="image" data-id="${json.pokemons[0].id}"><h3>${json.pokemons[0].name}</h3>Moves:<ul id="poke-1-list"></ul></div>
-      <div class="poke-card" data-id="1"><img src="${json.pokemons[1].image_url}" class="image" data-id="${json.pokemons[1].id}"><h3>${json.pokemons[1].name}</h3>Moves:<ul id="poke-2-list"></ul></div>
-      <div class="poke-card" data-id="2"><img src="${json.pokemons[2].image_url}" class="image" data-id="${json.pokemons[2].id}"><h3>${json.pokemons[2].name}</h3>Moves:<ul id="poke-3-list"></ul></div>
-      <div class="poke-card" data-id="3"><img src="${json.pokemons[3].image_url}" class="image" data-id="${json.pokemons[3].id}"><h3>${json.pokemons[3].name}</h3>Moves:<ul id="poke-4-list"></ul></div>
-      <div class="poke-card" data-id="4"><img src="${json.pokemons[4].image_url}" class="image" data-id="${json.pokemons[4].id}"><h3>${json.pokemons[4].name}</h3>Moves:<ul id="poke-5-list"></ul></div>
-      <div class="poke-card" data-id="5"><img src="${json.pokemons[5].image_url}" class="image" data-id="${json.pokemons[5].id}"><h3>${json.pokemons[5].name}</h3>Moves:<ul id="poke-6-list"></ul></div>
-      `;
-          document.body.appendChild(selectedPokemonContainer);
-
-          const team1List = document.getElementById('poke-1-list');
-          const team2List = document.getElementById('poke-2-list');
-          const team3List = document.getElementById('poke-3-list');
-          const team4List = document.getElementById('poke-4-list');
-          const team5List = document.getElementById('poke-5-list');
-          const team6List = document.getElementById('poke-6-list');
-
-          json.moves.forEach((move) => {
-            if (move.pokemon_id === json.pokemons[0].id) {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team1List.appendChild(li);
-            } else if (move.pokemon_id === json.pokemons[1].id) {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team2List.appendChild(li);
-            } else if (move.pokemon_id === json.pokemons[2].id) {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team3List.appendChild(li);
-            } else if (move.pokemon_id === json.pokemons[3].id) {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team4List.appendChild(li);
-            } else if (move.pokemon_id === json.pokemons[4].id) {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team5List.appendChild(li);
-            } else {
-              const li = document.createElement('li');
-              li.innerText = `${move.name} - Power: ${move.power}hp`;
-              team6List.appendChild(li);
-            }
+          document.body.innerHTML = `<h1>CHOOSE A POKEMON</h1>`;
+          debugger;
+          let num = 0;
+          let pokeNum = 1;
+          json.pokemons.forEach(function (pokemon) {
+            document.body.innerHTML += `
+              <div id='selected-pokemon-container'>
+             
+              <div class="poke-card" data-id="${num}"><img src="${pokemon.image_url}" class="image" data-id="${pokemon.id}">
+              <h3>${pokemon.name}</h3>Moves:<ul id="poke-${pokeNum}-list">
+              <li>${pokemon.moves[0]}</li><li>${pokemon.moves[1]}</li><li>${pokemon.moves[2]}</li>
+              </ul>
+              </div>
+              </div>
+            `;
+            // document.body.append(selectedPokemonContainer)
+            num++;
+            pokeNum++;
           });
 
           const opponentContainer = document.createElement('div');
@@ -135,7 +112,7 @@ function battleRender() {
               userContainer.id = 'user-container';
               userContainer.dataset.id =
                 json.pokemons[event.target.parentNode.dataset.id].id;
-                console.log(userContainer.dataset.id)
+              console.log(userContainer.dataset.id);
               userContainer.innerHTML = `
           <img src="${
             json.pokemons[event.target.parentNode.dataset.id].image_url
@@ -156,7 +133,7 @@ function battleRender() {
               selectedPokemonContainer.innerHTML = ``;
 
               chosenPokemon(event.target);
-              console.log(event.target.dataset.id) // user choose pokemon, and create Pokemon class instance.
+              console.log(event.target.dataset.id); // user choose pokemon, and create Pokemon class instance.
             } else if (event.target.className === 'attack') {
               console.log(
                 `user:" ${userPokemon.name}, oppn:${opponentPokemon.name}`,
@@ -168,16 +145,4 @@ function battleRender() {
         });
     }
   });
-}
-
-function addAvatarImage() {
-  for (let i = 1; i < 7; i++) {
-    let divTeam = document.getElementById(`team-${i}`);
-    let img = document.createElement('img');
-
-    img.src = `image/${i}.png`;
-    img.alt = 'Avatar';
-    img.className = 'avatar';
-    divTeam.prepend(img);
-  }
 }

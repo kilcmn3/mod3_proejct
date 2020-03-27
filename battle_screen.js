@@ -11,7 +11,12 @@ function chosenPokemon(element) {
       return response.json();
     })
     .then(function (pokemon) {
-      userPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves, pokemon.team_id);
+      userPokemon = new Pokemon(
+        pokemon.hp,
+        pokemon.name,
+        pokemon.moves,
+        pokemon.team_id,
+      );
 
       divUserCont.innerHTML += `
       <div class="user-progress">
@@ -29,7 +34,12 @@ function opponentPokemonChosen() {
       return response.json();
     })
     .then(function (pokemon) {
-      opponentPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves, pokemon.team_id);
+      opponentPokemon = new Pokemon(
+        pokemon.hp,
+        pokemon.name,
+        pokemon.moves,
+        pokemon.team_id,
+      );
       createDivContainer(pokemon);
     });
 }
@@ -60,33 +70,33 @@ function battleStart(list) {
   let oppnProgress = document.querySelector('.oppn-progress');
 
   //prevent user or opponent HP to go below  0 HP.
-  let winTotal = userTeam.wins
-  let lossTotal = userTeam.losses
+  let winTotal = userTeam.wins;
+  let lossTotal = userTeam.losses;
   if (opHP < 1) {
     opHP = 0;
-    winTotal++
+    winTotal++;
     alert('You Won!');
     fetch(`http://localhost:3000/teams/${userPokemon.team_id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify({"wins": winTotal})
-    })
+      body: JSON.stringify({ wins: winTotal }),
+    });
     return location.reload();
   } else if (usHP < 0) {
     usHP = 0;
-    lossTotal++
+    lossTotal++;
     alert('You Lost!');
     fetch(`http://localhost:3000/teams/${userPokemon.team_id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify({"losses": lossTotal})
-    })
+      body: JSON.stringify({ losses: lossTotal }),
+    });
     return location.reload();
   }
 
