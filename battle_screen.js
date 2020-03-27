@@ -4,22 +4,37 @@ let divUserCont;
 let opponentMove;
 
 function chosenPokemon(element) {
-  divUserCont = document.querySelector('#user-container');
-  document.body.style.backgroundImage = '';
+  let divTeamCon = document.getElementById('teams-container');
+  divTeamCon.innerHTML = '';
+  divRow.innerHTML = '';
 
   fetch(`http://localhost:3000/pokemons/${element.dataset.id}`)
     .then(function (response) {
       return response.json();
     })
     .then(function (pokemon) {
-      userPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves, pokemon.team_id);
-
-      divUserCont.innerHTML += `
+      userPokemon = new Pokemon(
+        pokemon.hp,
+        pokemon.name,
+        pokemon.moves,
+        pokemon.team_id,
+      );
+      document.body.innerHTML += `
+      <div id="user-container">
+      <h3 class="user-poke-name">${pokemon.name}</h3>
+      <br>
+      <img src=${pokemon.image_url} class="user-image">
+      <a href="#" class="btn btn-primary" id="attack">
+      <span class="glyphicon glyphicon-user"></span>${pokemon.moves[0].name} - Power: ${pokemon.moves[0].power}hp</a>
+      <a href="#" class="btn btn-primary" id="attack">
+      <span class="glyphicon glyphicon-user"></span>${pokemon.moves[1].name} - Power: ${pokemon.moves[1].power}hp</a>
+      <a href="#" class="btn btn-primary" id="attack">
+      <span class="glyphicon glyphicon-user"></span>${pokemon.moves[2].name} - Power: ${pokemon.moves[2].power}hp</a>  
       <div class="user-progress">
       User's HP: <progress value=${pokemon.hp} max=${pokemon.hp}></progress>
       <p><span>${pokemon.hp}/${pokemon.hp}</span></p>
+      </div>
       </div>`;
-
       opponentPokemonChosen();
     });
 }
@@ -30,17 +45,28 @@ function opponentPokemonChosen() {
       return response.json();
     })
     .then(function (pokemon) {
-      opponentPokemon = new Pokemon(pokemon.hp, pokemon.name, pokemon.moves, pokemon.team_id);
+      opponentPokemon = new Pokemon(
+        pokemon.hp,
+        pokemon.name,
+        pokemon.moves,
+        pokemon.team_id,
+      );
       createDivContainer(pokemon);
     });
+
+  const vs = document.createElement('div');
+  vs.id = 'vs';
+  vs.innerText = 'vs.';
+  document.body.append(vs);
 }
 
 function createDivContainer(pokemon) {
-  let divContLeft = document.createElement('div');
-  divContLeft.className = 'div-cont-right';
-  divContLeft.innerHTML = `
+  let divConRight = document.createElement('div');
+  divConRight.className = 'div-cont-right';
+
+  divConRight.innerHTML = `
   <div class="div1">
-  <h1 class="opp-poke-name">${pokemon.name}</h1>
+  <h3 class="opp-poke-name">${pokemon.name}</h3>
   <br>
   <img src=${pokemon.image_url} class="opponent-image">
   <div class="oppn-progress">
@@ -49,7 +75,7 @@ function createDivContainer(pokemon) {
   </div>
   </div>
   `;
-  document.body.append(divContLeft);
+  document.body.append(divConRight);
 }
 
 function battleStart(list) {
@@ -61,33 +87,33 @@ function battleStart(list) {
   let oppnProgress = document.querySelector('.oppn-progress');
 
   //prevent user or opponent HP to go below  0 HP.
-  let winTotal = userTeam.wins
-  let lossTotal = userTeam.losses
+  let winTotal = userTeam.wins;
+  let lossTotal = userTeam.losses;
   if (opHP < 1) {
     opHP = 0;
-    winTotal++
+    winTotal++;
     alert('You Won!');
     fetch(`http://localhost:3000/teams/${userPokemon.team_id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify({"wins": winTotal})
-    })
+      body: JSON.stringify({ wins: winTotal }),
+    });
     return location.reload();
   } else if (usHP < 0) {
     usHP = 0;
-    lossTotal++
+    lossTotal++;
     alert('You Lost!');
     fetch(`http://localhost:3000/teams/${userPokemon.team_id}`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
-      body: JSON.stringify({"losses": lossTotal})
-    })
+      body: JSON.stringify({ losses: lossTotal }),
+    });
     return location.reload();
   }
 
@@ -108,7 +134,7 @@ function opponentAttack() {
     opponentPokemon.moves[
       Math.floor(Math.random() * opponentPokemon.moves.length)
     ];
-  opponentMove = attackMove.name
+  opponentMove = attackMove.name;
   return attackMove.power;
 }
 

@@ -11,7 +11,7 @@ async function choosePlayer(bttn) {
 }
 
 function userChoose(bttn) {
-  return fetch(`http://localhost:3000/teams/${bttn.parentNode.dataset.id}`)
+  return fetch(`http://localhost:3000/teams/${bttn.dataset.id}`)
     .then(function (response) {
       return response.json();
     })
@@ -22,7 +22,7 @@ function userChoose(bttn) {
 
 function opponentChoose(bttn) {
   let teamNumbers = ['1', '2', '3', '4', '5', '6']; // Array of team  numbers
-  let number = bttn.parentNode.dataset.id;
+  let number = bttn.dataset.id;
   let removeNum = teamNumbers.indexOf(number);
 
   teamNumbers.splice(removeNum, 1); //  Subtract user's choice number ex) if user choose "1", then  splice will remove "1" and return ["2","3","4","5","6"]
@@ -34,7 +34,12 @@ function opponentChoose(bttn) {
       return response.json();
     })
     .then(function (team) {
-      opponentTeam = new Player(team.name, team.pokemons, team.wins, team.losses); // check Player.js file.
+      opponentTeam = new Player(
+        team.name,
+        team.pokemons,
+        team.wins,
+        team.losses,
+      ); // check Player.js file.
       opponentTeam.id = team.id;
     });
 }

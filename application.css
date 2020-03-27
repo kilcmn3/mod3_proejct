@@ -1,11 +1,10 @@
 body {
   font-family: "Arial Rounded MT Bold";
-}
-
-.image {
-  width: 100px;
-  height: auto;
-  border-radius: 10%;
+  background: url('./image/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
 }
 
 .user-image {
@@ -20,7 +19,6 @@ body {
   border-radius: 10%;
   float: right;
 }
-
 .opp-poke-name {
   float: center;
   text-align: center;
@@ -38,29 +36,6 @@ body {
   grid-area: 1 / 2 / 2 / 3;
 }
 
-.avatar {
-  vertical-align: baseline;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: solid;
-  border-width: 1px;
-  border-color: black;
-}
-
-.attack {
-    background-color: blue;
-    border: none;
-    color: white;
-    padding: 15px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-family: "Arial Rounded MT Bold";
-    font-size: 13px;
-    margin: 2px;
-}
-
 #battle-feed {
   position:absolute;
   bottom:0;
@@ -72,4 +47,6 @@ body {
   right: 400px;
   top: 200px;
   font-size: 72pt;
+  font-weight: bold;
+  color: red;
 }
